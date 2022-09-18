@@ -1,28 +1,47 @@
 package dev.tonholo.composeinstagram.ui.theme
 
 import androidx.compose.material.Typography
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import dev.tonholo.composeinstagram.ui.theme.typography.InstagramSans
+import dev.tonholo.composeinstagram.ui.theme.typography.TypographyTokens
 
-// Set of Material typography styles to start with
-val Typography = Typography(
-    body1 = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+@Immutable
+data class AppTypography(
+    val displayLarge: TextStyle = TypographyTokens.DisplayLarge,
+    val displayMedium: TextStyle = TypographyTokens.DisplayMedium,
+    val displaySmall: TextStyle = TypographyTokens.DisplaySmall,
+    val headlineLarge: TextStyle = TypographyTokens.HeadlineLarge,
+    val headlineMedium: TextStyle = TypographyTokens.HeadlineMedium,
+    val headlineSmall: TextStyle = TypographyTokens.HeadlineSmall,
+    val titleLarge: TextStyle = TypographyTokens.TitleLarge,
+    val titleMedium: TextStyle = TypographyTokens.TitleMedium,
+    val titleSmall: TextStyle = TypographyTokens.TitleSmall,
+    val bodyLarge: TextStyle = TypographyTokens.BodyLarge,
+    val bodyMedium: TextStyle = TypographyTokens.BodyMedium,
+    val bodySmall: TextStyle = TypographyTokens.BodySmall,
+    val labelLarge: TextStyle = TypographyTokens.LabelLarge,
+    val labelMedium: TextStyle = TypographyTokens.LabelMedium,
+    val labelSmall: TextStyle = TypographyTokens.LabelSmall,
+) {
+    fun toMaterial(): Typography = Typography(
+        defaultFontFamily = InstagramSans,
+        h1 = displaySmall,
+        h2 = headlineLarge,
+        h3 = headlineMedium,
+        h4 = headlineSmall,
+        h5 = titleLarge,
+        h6 = labelSmall,
+        subtitle1 = titleMedium,
+        subtitle2 = titleSmall,
+        body1 = bodyLarge,
+        body2 = bodyMedium,
+        button = labelLarge,
+        caption = bodySmall,
+        overline = labelMedium,
     )
-    /* Other default text styles to override
-    button = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
-    ),
-    caption = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    )
-    */
-)
+}
+
+val Typography = AppTypography()
+val LocalTypography = staticCompositionLocalOf { Typography }
