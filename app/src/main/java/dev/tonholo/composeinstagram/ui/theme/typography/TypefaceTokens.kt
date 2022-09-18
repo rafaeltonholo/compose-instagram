@@ -61,7 +61,7 @@ val InstagramSansHeadline = FontFamily(
 )
 
 internal object TypefaceTokens {
-    val Brand = InstagramSansScript
+    val Brand = InstagramSansHeadline
     val Plain = InstagramSans
     val WeightBold = FontWeight.Bold
     val WeightMedium = FontWeight.Medium

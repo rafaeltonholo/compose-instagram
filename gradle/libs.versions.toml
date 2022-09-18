@@ -27,6 +27,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 [libraries]
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidxComposeActivity" }
+androidx-compose-material-icons_extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidxCompose" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidxCompose" }
 androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidxCompose" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidxCompose" }
@@ -49,6 +50,7 @@ androidx-compose = [
     "androidx-compose-ui",
     "androidx-compose-ui-tooling-preview",
     "androidx-compose-material",
+    "androidx-compose-material-icons_extended",
 ]
 androidx-compose-debug = [
     "androidx-compose-ui-tooling",

@@ -25,6 +25,7 @@ interface AppColors {
     val onSurfaceVariant: Color
     val error: Color
     val onError: Color
+    val outline: Color
 
     fun toMaterial(darkTheme: Boolean): Colors = if (darkTheme) {
         darkColors(
@@ -72,6 +73,7 @@ internal object LightColorsPalette : AppColors {
     override val onSurfaceVariant: Color = CodGray
     override val error: Color = Coral
     override val onError: Color = Color.White
+    override val outline: Color = CodGray
 }
 
 internal object DarkColorsPalette : AppColors {
@@ -87,6 +89,7 @@ internal object DarkColorsPalette : AppColors {
     override val onSurfaceVariant: Color = Lotion
     override val error: Color = Coral
     override val onError: Color = Color.White
+    override val outline: Color = CodGray
 }
 
 internal val LocalAppColors = staticCompositionLocalOf<AppColors> { LightColorsPalette }
