@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -32,7 +33,9 @@ fun UserStoryIcon(
     modifier: Modifier = Modifier,
     shouldShowAddIcon: Boolean = true,
 ) {
-    Box(modifier = modifier) {
+    Box(
+        modifier = modifier
+    ) {
         Box(
             modifier = Modifier
                 .then(
@@ -56,12 +59,11 @@ fun UserStoryIcon(
         ) {
             UserProfileIcon(
                 profileIconUrl = profileImageUrl,
-                modifier = Modifier
-                    .size(64.dp),
+                modifier = Modifier.wrapContentSize(),
             )
         }
 
-        if (isOwner && shouldShowAddIcon) {
+        if (isOwner && shouldShowAddIcon && !hasStory) {
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -156,6 +158,7 @@ private fun Preview(
             profileImageUrl = "",
             hasStory = hasStory,
             isOwner = isOwner,
+            modifier = Modifier.size(64.dp)
         )
     }
 }

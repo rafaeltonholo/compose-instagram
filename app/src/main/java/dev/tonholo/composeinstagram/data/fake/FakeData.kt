@@ -15,7 +15,7 @@ object FakeData {
         val faker = Faker()
         List(100) {
             User(
-                profileImage = faker.avatar.image(),
+                profileImage = generateRandomImage(),
                 name = faker.name.name(),
                 userTag = UserTag(faker.internet.userName()),
             )
@@ -45,4 +45,6 @@ object FakeData {
             )
         }
     }
+
+    private fun generateRandomImage(): String = "https://picsum.photos/300/300.jpg?random=${Random.nextInt()}"
 }

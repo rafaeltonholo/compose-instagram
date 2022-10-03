@@ -8,10 +8,10 @@ object FakeStoryApi : StoryApi {
     override suspend fun fetchStories(): List<UserStory> = FakeData
         .userStories
         .sortedWith(compareBy {
-            if (it.owner == FakeData.currentUser) {
-                1
-            } else {
-                -1
+            when {
+                it.owner == FakeData.currentUser -> 1
+                it.stories.isNotEmpty() -> 0
+                else -> -1
             }
         })
 }

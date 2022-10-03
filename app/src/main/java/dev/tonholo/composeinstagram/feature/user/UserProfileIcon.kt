@@ -33,7 +33,7 @@ fun UserProfileIcon(
         AsyncImage(
             model = profileIconUrl,
             contentDescription = "Profile icon",
-            placeholder = painterResource(id = R.drawable.user_profile_placeholder),
+            placeholder = painterResource(id = R.drawable.ic_user_profile_placeholder_optimized),
             modifier = Modifier
                 .fillMaxSize()
                 .border(
