@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
 import dev.tonholo.composeinstagram.ui.theme.Theme
@@ -29,19 +31,20 @@ import dev.tonholo.composeinstagram.ui.theme.Theme
 fun UserStoryIcon(
     profileImageUrl: String,
     hasStory: Boolean,
-    isOwner: Boolean,
     modifier: Modifier = Modifier,
     shouldShowAddIcon: Boolean = true,
+    storyBorderStrokeWidth: Dp = 2.dp,
+    onClick: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier
+        modifier = modifier.clickable(onClick = onClick),
     ) {
         Box(
             modifier = Modifier
                 .then(
                     if (hasStory) {
                         Modifier.border(
-                            width = 2.dp,
+                            width = storyBorderStrokeWidth,
                             brush = Brush.horizontalGradient(
                                 colors = listOf(
                                     Color(0xFFFDBA48),
@@ -55,7 +58,7 @@ fun UserStoryIcon(
                         Modifier
                     }
                 )
-                .padding(4.dp)
+                .padding(storyBorderStrokeWidth * 2)
         ) {
             UserProfileIcon(
                 profileIconUrl = profileImageUrl,
@@ -63,7 +66,7 @@ fun UserStoryIcon(
             )
         }
 
-        if (isOwner && shouldShowAddIcon && !hasStory) {
+        if (shouldShowAddIcon && !hasStory) {
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -89,7 +92,6 @@ fun UserStoryIcon(
 
 private data class UserStoryIconPreviewParameter(
     val hasStory: Boolean,
-    val isOwner: Boolean,
     val shouldShowAddIcon: Boolean,
 )
 
@@ -98,42 +100,34 @@ private class UserStoryIconPreviewParameterCollection :
         listOf(
             UserStoryIconPreviewParameter(
                 hasStory = true,
-                isOwner = true,
                 shouldShowAddIcon = true,
             ),
             UserStoryIconPreviewParameter(
                 hasStory = false,
-                isOwner = true,
-                shouldShowAddIcon = true,
-            ),
-            UserStoryIconPreviewParameter(
-                hasStory = true,
-                isOwner = false,
-                shouldShowAddIcon = true,
-            ),
-            UserStoryIconPreviewParameter(
-                hasStory = false,
-                isOwner = false,
                 shouldShowAddIcon = true,
             ),
             UserStoryIconPreviewParameter(
                 hasStory = true,
-                isOwner = true,
+                shouldShowAddIcon = true,
+            ),
+            UserStoryIconPreviewParameter(
+                hasStory = false,
+                shouldShowAddIcon = true,
+            ),
+            UserStoryIconPreviewParameter(
+                hasStory = true,
                 shouldShowAddIcon = false,
             ),
             UserStoryIconPreviewParameter(
                 hasStory = false,
-                isOwner = true,
                 shouldShowAddIcon = false,
             ),
             UserStoryIconPreviewParameter(
                 hasStory = true,
-                isOwner = false,
                 shouldShowAddIcon = false,
             ),
             UserStoryIconPreviewParameter(
                 hasStory = false,
-                isOwner = false,
                 shouldShowAddIcon = false,
             ),
         )
@@ -152,12 +146,12 @@ private class UserStoryIconPreviewParameterCollection :
 private fun Preview(
     @PreviewParameter(UserStoryIconPreviewParameterCollection::class) params: UserStoryIconPreviewParameter,
 ) {
-    val (hasStory, isOwner) = params
+    val (hasStory, shouldShowAddIcon) = params
     ComposeInstagramTheme {
         UserStoryIcon(
             profileImageUrl = "",
             hasStory = hasStory,
-            isOwner = isOwner,
+            shouldShowAddIcon = shouldShowAddIcon,
             modifier = Modifier.size(64.dp)
         )
     }

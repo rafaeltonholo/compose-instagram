@@ -46,11 +46,11 @@ fun StoryRow(
                 UserStoryIcon(
                     profileImageUrl = story.profileImage,
                     hasStory = story.hasPendingStories,
-                    isOwner = story.isOwner,
+                    shouldShowAddIcon = story.isOwner,
                     modifier = Modifier
                         .size(64.dp)
                         .align(Alignment.CenterHorizontally)
-                )
+                ) {}
                 Text(
                     text = if (story.isOwner) "Your story" else story.author,
                     style = Theme.typography.bodySmall,
