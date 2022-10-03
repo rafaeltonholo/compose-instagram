@@ -59,4 +59,7 @@ dependencies {
 
     testImplementation libs.junit
     androidTestImplementation libs.bundles.androidx.tests
+
+    implementation libs.faker
+    implementation libs.kotlinx.collections.immutable
 }
