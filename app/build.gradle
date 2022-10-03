@@ -62,4 +62,6 @@ dependencies {
 
     implementation libs.faker
     implementation libs.kotlinx.collections.immutable
+
+    implementation libs.bundles.accompanist
 }

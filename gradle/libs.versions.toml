@@ -8,6 +8,8 @@ versionName = "1.0"
 androidGradle = "8.0.0-alpha02"
 kotlin = "1.7.10"
 
+accompanist = "0.25.1"
+
 androidxCore = "1.9.0"
 androidxCompose = "1.2.1"
 androidxComposeActivity = "1.5.1"
@@ -31,6 +33,9 @@ android-library = { id = "com.android.library", version.ref = "androidGradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 [libraries]
+accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist"}
+accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist"}
+
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidxComposeActivity" }
 androidx-compose-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
@@ -54,9 +59,9 @@ junit = { module = "junit:junit", version.ref = "junit" }
 kotlinx-collections_immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxImmutablelist"}
 
 [bundles]
-core = [
-    "androidx-core",
-    "androidx-lifecycle-runtime",
+accompanist = [
+    "accompanist-pager",
+    "accompanist-pager-indicators",
 ]
 androidx-compose = [
     "androidx-compose-activity",
@@ -74,4 +79,8 @@ androidx-compose-debug = [
 androidx-tests = [
     "androidx-test-junit",
     "androidx-test-espresso",
+]
+core = [
+    "androidx-core",
+    "androidx-lifecycle-runtime",
 ]
