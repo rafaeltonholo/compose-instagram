@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
@@ -74,6 +76,9 @@ fun PostActionBar(
                     pageCount = imageCount,
                     activeColor = Theme.colors.onSurface,
                     inactiveColor = Theme.colors.onSurface.copy(alpha = 0.5f),
+                    indicatorWidth = 4.dp,
+                    indicatorHeight = 4.dp,
+                    modifier = Modifier.offset(x = (-48).dp)
                 )
             }
         } else {

@@ -78,6 +78,9 @@ fun HomeScreen(
                         isPostLiked = post.likes.any { like -> like.userTag == state.userState.currentUser?.userTag },
                         isPostSaved = false,
                         likes = post.likes.toImmutableSet(),
+                        postDate = post.postDate,
+                        ownerComment = post.ownerComment,
+                        commentCount = post.comments?.size ?: 0
                     )
                 }
             }

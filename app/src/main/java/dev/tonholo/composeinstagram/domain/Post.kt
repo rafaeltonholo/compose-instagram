@@ -13,4 +13,5 @@ data class Post(
     val likes: Set<PostLike>,
     val comments: List<Comment>?,
     val postDate: LocalDateTime,
+    val ownerComment: String?,
 )

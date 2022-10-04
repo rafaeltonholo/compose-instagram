@@ -11,6 +11,8 @@ private val CodGray = Color(0xFF1A1A1A)
 private val RaisinBlack = Color(0xFF262626)
 private val Azure = Color(0xFF0094F4)
 private val Coral = Color(0xFFFF3040)
+private val Nickel = Color(0xFF737373)
+private val DarkGray = Color(0xFFA8A8A8)
 
 interface AppColors {
     val primary: Color
@@ -19,6 +21,7 @@ interface AppColors {
     val onSecondary: Color
     val background: Color
     val onBackground: Color
+    val onBackgroundVariant: Color
     val surface: Color
     val onSurface: Color
     val surfaceVariant: Color
@@ -68,6 +71,7 @@ internal object LightColorsPalette : AppColors {
     override val onSecondary: Color = Color.White
     override val background: Color = Color.White
     override val onBackground: Color = RaisinBlack
+    override val onBackgroundVariant: Color = Nickel
     override val surface: Color = Color.White
     override val onSurface: Color = RaisinBlack
     override val surfaceVariant: Color = Lotion
@@ -85,6 +89,7 @@ internal object DarkColorsPalette : AppColors {
     override val onSecondary: Color = Color.White
     override val background: Color = Color.Black
     override val onBackground: Color = Lotion
+    override val onBackgroundVariant: Color = DarkGray
     override val surface: Color = Color.Black
     override val onSurface: Color = Lotion
     override val surfaceVariant: Color = CodGray

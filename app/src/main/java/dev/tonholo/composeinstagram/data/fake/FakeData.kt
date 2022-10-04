@@ -8,8 +8,12 @@ import dev.tonholo.composeinstagram.domain.User
 import dev.tonholo.composeinstagram.domain.UserStory
 import dev.tonholo.composeinstagram.domain.UserTag
 import io.bloco.faker.Faker
+import java.time.Instant
+import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlin.random.Random
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 object FakeData {
     val currentUser by lazy { users.first() }
@@ -51,7 +55,7 @@ object FakeData {
 
     val posts: List<Post> by lazy {
         val faker = Faker()
-        List(1000) {
+        val posts = List(1000) {
 
             val post = Post(
                 owner = users[Random.nextInt(0, users.size)],
@@ -64,11 +68,13 @@ object FakeData {
                     )
                 }.toSet(),
                 comments = null,
-                postDate = faker.date
-                    .backward(10)
-                    .toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime(),
+//                postDate = faker.date
+//                    .backward(30)
+//                    .toInstant()
+//                    .atZone(ZoneId.systemDefault())
+//                    .toLocalDateTime(),
+                postDate = generateRandomDate(),
+                ownerComment = faker.lorem.sentence(),
             )
 
             val comments = List(Random.nextInt(0, 10)) {
@@ -81,10 +87,23 @@ object FakeData {
             }
             post.copy(comments = comments)
         }
+        posts
     }
 
     private fun generateRandomImage(
         width: Int = 300,
         height: Int = 300,
     ): String = "https://picsum.photos/$width/$height.jpg?random=${Random.nextInt()}"
+
+    private fun generateRandomDate(): LocalDateTime {
+        val now = System.currentTimeMillis()
+        val thirtyDaysMilliseconds = 30.toDuration(DurationUnit.DAYS).inWholeMilliseconds
+        val delta = now - thirtyDaysMilliseconds
+        val randomMilliseconds = (delta + Random.nextLong(0, thirtyDaysMilliseconds))
+            .let {
+                if (it >= now) now
+                else it
+            }
+        return Instant.ofEpochMilli(randomMilliseconds).atZone(ZoneId.systemDefault()).toLocalDateTime()
+    }
 }

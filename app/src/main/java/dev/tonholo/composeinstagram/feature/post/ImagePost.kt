@@ -23,11 +23,14 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import dev.tonholo.composeinstagram.domain.PostLike
 import dev.tonholo.composeinstagram.domain.UserTag
+import dev.tonholo.composeinstagram.extension.toTimestamp
 import dev.tonholo.composeinstagram.feature.post.components.PostActionBar
+import dev.tonholo.composeinstagram.feature.post.components.PostCommentSection
 import dev.tonholo.composeinstagram.feature.post.components.PostLikesBar
 import dev.tonholo.composeinstagram.feature.post.components.PostTitleBar
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
 import dev.tonholo.composeinstagram.ui.theme.Theme
+import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
@@ -42,8 +45,11 @@ fun ImagePost(
     images: ImmutableList<String>,
     isPostLiked: Boolean,
     isPostSaved: Boolean,
+    postDate: LocalDateTime,
     modifier: Modifier = Modifier,
     likes: ImmutableSet<PostLike>? = null,
+    ownerComment: String? = null,
+    commentCount: Int = 0,
 ) {
     val pagerState = rememberPagerState()
     Column(
@@ -105,6 +111,23 @@ fun ImagePost(
                     .padding(vertical = 8.dp, horizontal = 16.dp),
             )
         }
+
+        PostCommentSection(
+            owner = userTag,
+            ownerComment = ownerComment,
+            commentCount = commentCount,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp, horizontal = 16.dp)
+        )
+
+        Text(
+            text = "Posted at ${postDate.toTimestamp()}",
+            modifier = Modifier
+                .padding(vertical = 8.dp, horizontal = 16.dp),
+            style = Theme.typography.labelSmall,
+            color = Theme.colors.onBackgroundVariant,
+        )
     }
 }
 
@@ -116,6 +139,9 @@ private data class ImagePostParams(
     val isPostLiked: Boolean,
     val isPostSaved: Boolean,
     val likes: ImmutableSet<PostLike>?,
+    val postDate: LocalDateTime,
+    val ownerComment: String?,
+    val commentCount: Int,
 )
 
 private class ImagePostParamsCol : CollectionPreviewParameterProvider<ImagePostParams>(
@@ -128,6 +154,9 @@ private class ImagePostParamsCol : CollectionPreviewParameterProvider<ImagePostP
             isPostLiked = true,
             isPostSaved = true,
             likes = null,
+            postDate = LocalDateTime.parse("2022-09-04T10:15:30"),
+            ownerComment = null,
+            commentCount = 0,
         ),
         ImagePostParams(
             userTag = UserTag("rafaeltonholo"),
@@ -142,6 +171,9 @@ private class ImagePostParamsCol : CollectionPreviewParameterProvider<ImagePostP
                     profileImageUrl = "",
                 ),
             ),
+            postDate = LocalDateTime.now(),
+            ownerComment = "That was nice!",
+            commentCount = 100,
         ),
         ImagePostParams(
             userTag = UserTag("rafaeltonholo"),
@@ -160,6 +192,9 @@ private class ImagePostParamsCol : CollectionPreviewParameterProvider<ImagePostP
                     profileImageUrl = "",
                 ),
             ),
+            postDate = LocalDateTime.now(),
+            ownerComment = "😅😅😅",
+            commentCount = 0,
         ),
         ImagePostParams(
             userTag = UserTag("rafaeltonholo"),
@@ -167,7 +202,8 @@ private class ImagePostParamsCol : CollectionPreviewParameterProvider<ImagePostP
             hasStory = false,
             images = persistentListOf("mock", "mock", "mock", "mock"),
             isPostLiked = false,
-            isPostSaved = false,likes = persistentSetOf(
+            isPostSaved = false,
+            likes = persistentSetOf(
                 PostLike(
                     userTag = UserTag("rtonholo"),
                     profileImageUrl = "",
@@ -185,6 +221,9 @@ private class ImagePostParamsCol : CollectionPreviewParameterProvider<ImagePostP
                     profileImageUrl = "",
                 ),
             ),
+            postDate = LocalDateTime.now(),
+            ownerComment = "LOL",
+            commentCount = 1000,
         ),
     )
 )
@@ -210,6 +249,9 @@ private fun Preview(
         isPostLiked,
         isPostSaved,
         likes,
+        postDate,
+        ownerComment,
+        commentCount,
     ) = params
     ComposeInstagramTheme {
         ImagePost(
@@ -219,7 +261,10 @@ private fun Preview(
             postCount,
             isPostLiked,
             isPostSaved,
+            postDate,
             likes = likes,
+            ownerComment = ownerComment,
+            commentCount = commentCount,
         )
     }
 }
