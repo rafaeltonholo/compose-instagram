@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -62,7 +63,13 @@ fun HomeScreen(
             }
 
             state.postState.posts?.let { posts ->
-                items(posts) { post ->
+                itemsIndexed(posts) { index, post ->
+                    LaunchedEffect(index >= posts.size - 1) {
+                        if (index >= posts.size - 1 && !state.postState.isEndReached && !state.postState.isLoading) {
+                            viewModel.fetchNextPosts()
+                        }
+                    }
+
                     ImagePost(
                         userTag = post.owner.userTag,
                         profileImageUrl = post.owner.profileImage,

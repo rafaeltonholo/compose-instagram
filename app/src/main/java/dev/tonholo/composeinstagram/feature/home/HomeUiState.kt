@@ -21,6 +21,7 @@ data class PostState(
     val isLoading: Boolean = false,
     val posts: ImmutableList<Post>? = null,
     val errorMessage: String? = null,
+    val isEndReached: Boolean = false,
 )
 
 data class HomeUiState(

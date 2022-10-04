@@ -71,7 +71,7 @@ class HomeViewModel(
         fetchNextPosts()
     }
 
-    private fun fetchNextPosts() {
+    fun fetchNextPosts() {
         viewModelScope.launch {
             fetchHomePosts(postState.value.posts).collectLatest { result ->
                 postState.update {
@@ -92,6 +92,7 @@ class HomeViewModel(
                             isLoading = false,
                             posts = (it.posts.orEmpty() + result.data).toImmutableList(),
                             errorMessage = null,
+                            isEndReached = result.data.isEmpty(),
                         )
                     }
                 }
