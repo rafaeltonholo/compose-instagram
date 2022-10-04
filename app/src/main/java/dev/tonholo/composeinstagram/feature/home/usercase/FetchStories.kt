@@ -19,7 +19,7 @@ class FetchStories(
                         author = userStory.owner.userTag.tag,
                         isOwner = index == 0,
                         profileImage = userStory.owner.profileImage,
-                        hasPendingStories = userStory.stories.isEmpty(),
+                        hasPendingStories = userStory.stories.isNotEmpty(),
                     )
                 }
             emit(Result.Success(storyItems))

@@ -32,8 +32,8 @@ data class StoryItem(
 
 @Composable
 fun StoryRow(
-    modifier: Modifier = Modifier,
     storyItems: ImmutableList<StoryItem>,
+    modifier: Modifier = Modifier,
 ) {
     LazyRow(
         modifier = modifier,
@@ -76,7 +76,6 @@ fun StoryRow(
 private fun Preview() {
     ComposeInstagramTheme {
         StoryRow(
-            modifier = Modifier.fillMaxWidth(),
             storyItems = FakeData.userStories
                 .mapIndexed { index, it ->
                     StoryItem(
@@ -86,7 +85,8 @@ private fun Preview() {
                         hasPendingStories = it.stories.isNotEmpty(),
                     )
                 }
-                .toImmutableList()
+                .toImmutableList(),
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

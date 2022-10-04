@@ -9,9 +9,9 @@ object FakeStoryApi : StoryApi {
         .userStories
         .sortedWith(compareBy {
             when {
-                it.owner == FakeData.currentUser -> 1
+                it.owner == FakeData.currentUser -> -1
                 it.stories.isNotEmpty() -> 0
-                else -> -1
+                else -> 1
             }
         })
 }

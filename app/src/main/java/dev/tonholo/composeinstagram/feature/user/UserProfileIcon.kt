@@ -27,6 +27,7 @@ fun UserProfileIcon(
 ) {
     Box(
         modifier = modifier
+            .clip(CircleShape)
             .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
     ) {
 

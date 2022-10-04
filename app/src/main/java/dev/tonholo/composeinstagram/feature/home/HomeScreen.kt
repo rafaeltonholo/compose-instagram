@@ -24,6 +24,7 @@ import dev.tonholo.composeinstagram.feature.home.usercase.FetchHomePosts
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchStories
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchUserData
 import dev.tonholo.composeinstagram.feature.post.ImagePost
+import dev.tonholo.composeinstagram.feature.post.components.NavigationBottomBar
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
@@ -44,8 +45,16 @@ fun HomeScreen(
         topBar = {
             HomeAppBar(modifier = Modifier.fillMaxWidth())
         },
-
-        ) {
+        bottomBar = {
+            NavigationBottomBar(
+                profileIconUrl = state.userState.currentUser?.profileImage.orEmpty(),
+                onSearchClick = { /*TODO*/ },
+                onReelsClick = { /*TODO*/ },
+                onShopClick = { /*TODO*/ },
+                onUserProfileClick = { /*TODO*/ }
+            )
+        },
+    ) {
         LazyColumn(
             modifier = Modifier
                 .padding(it)

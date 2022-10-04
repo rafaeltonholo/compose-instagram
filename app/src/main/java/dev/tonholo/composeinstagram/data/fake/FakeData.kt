@@ -22,7 +22,11 @@ object FakeData {
         val faker = Faker()
         List(100) {
             User(
-                profileImage = generateRandomImage(),
+                profileImage = if (it == 0) {
+                    "https://i.picsum.photos/id/582/1920/1080.jpg?hmac=VrdLg-rz2_YPYMHM4CgQbfjyn4swqF-25M4CK8B2F5o"
+                } else {
+                    generateRandomImage()
+                },
                 name = faker.name.name(),
                 userTag = UserTag(faker.internet.userName()),
             )
@@ -50,6 +54,25 @@ object FakeData {
                     )
                 }
             )
+        }.let { userStories ->
+            if (userStories.none { it.owner == currentUser }) {
+                listOf(
+                    UserStory(
+                        owner = currentUser,
+                        stories = List(Random.nextInt(0, 2)) {
+                            Story(
+                                mediaUrl = faker.placeholdit.image(),
+                                postDate = faker.date
+                                    .backward(3)
+                                    .toInstant()
+                                    .atZone(ZoneId.systemDefault()).toLocalDate(),
+                            )
+                        }
+                    )
+                ) + userStories
+            } else {
+                userStories
+            }
         }
     }
 
@@ -68,11 +91,6 @@ object FakeData {
                     )
                 }.toSet(),
                 comments = null,
-//                postDate = faker.date
-//                    .backward(30)
-//                    .toInstant()
-//                    .atZone(ZoneId.systemDefault())
-//                    .toLocalDateTime(),
                 postDate = generateRandomDate(),
                 ownerComment = faker.lorem.sentence(),
             )
