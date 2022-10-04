@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,17 +14,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.tonholo.composeinstagram.data.fake.local.FakeUserDao
+import dev.tonholo.composeinstagram.data.fake.remote.FakePostApi
 import dev.tonholo.composeinstagram.data.fake.remote.FakeStoryApi
 import dev.tonholo.composeinstagram.feature.home.components.HomeAppBar
 import dev.tonholo.composeinstagram.feature.home.components.StoryRow
+import dev.tonholo.composeinstagram.feature.home.usercase.FetchHomePosts
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchStories
+import dev.tonholo.composeinstagram.feature.home.usercase.FetchUserData
+import dev.tonholo.composeinstagram.feature.post.ImagePost
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel {
-        HomeViewModel(FetchStories(FakeStoryApi))
-    }
+        HomeViewModel(
+            FetchUserData(FakeUserDao),
+            FetchStories(FakeStoryApi),
+            FetchHomePosts(FakePostApi),
+        )
+    },
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -32,7 +44,7 @@ fun HomeScreen(
             HomeAppBar(modifier = Modifier.fillMaxWidth())
         },
 
-    ) {
+        ) {
         LazyColumn(
             modifier = Modifier
                 .padding(it)
@@ -45,6 +57,20 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp, bottom = 8.dp),
+                    )
+                }
+            }
+
+            state.postState.posts?.let { posts ->
+                items(posts) { post ->
+                    ImagePost(
+                        userTag = post.owner.userTag,
+                        profileImageUrl = post.owner.profileImage,
+                        hasStory = false,
+                        images = post.images.toImmutableList(),
+                        isPostLiked = post.likes.any { like -> like.userTag == state.userState.currentUser?.userTag },
+                        isPostSaved = false,
+                        likes = post.likes.toImmutableSet(),
                     )
                 }
             }

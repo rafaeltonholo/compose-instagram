@@ -26,7 +26,7 @@ class FetchStories(
         } catch (e: Exception) {
             emit(
                 Result.Error(
-                    message = "Unhandled error",
+                    message = e.message ?: "Unhandled error",
                     throwable = e,
                 )
             )

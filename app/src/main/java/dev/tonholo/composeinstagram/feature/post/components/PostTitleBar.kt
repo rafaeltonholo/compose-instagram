@@ -54,7 +54,7 @@ fun PostTitleBar(
                 addStyle(SpanStyle(color = Theme.colors.onSurface), 0, userTag.tag.length)
                 append(userTag.tag)
             },
-            style = Theme.typography.labelSmall,
+            style = Theme.typography.labelMedium,
             onClick = { onUserTagClick(userTag) },
             modifier = Modifier.weight(1f),
         )

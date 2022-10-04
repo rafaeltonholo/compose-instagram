@@ -26,6 +26,7 @@ interface AppColors {
     val error: Color
     val onError: Color
     val outline: Color
+    val onOutline: Color
 
     fun toMaterial(darkTheme: Boolean): Colors = if (darkTheme) {
         darkColors(
@@ -74,6 +75,7 @@ internal object LightColorsPalette : AppColors {
     override val error: Color = Coral
     override val onError: Color = Color.White
     override val outline: Color = CodGray
+    override val onOutline: Color = Color.White
 }
 
 internal object DarkColorsPalette : AppColors {
@@ -90,6 +92,7 @@ internal object DarkColorsPalette : AppColors {
     override val error: Color = Coral
     override val onError: Color = Color.White
     override val outline: Color = CodGray
+    override val onOutline: Color = Color.White
 }
 
 internal val LocalAppColors = staticCompositionLocalOf<AppColors> { LightColorsPalette }

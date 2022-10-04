@@ -69,7 +69,7 @@ internal object TypeScaleTokens {
     val LabelMediumTracking = 0.5.sp
     val LabelMediumWeight = TypefaceTokens.WeightMedium
 
-    val LabelSmallFont = TypefaceTokens.Plain
+    val LabelSmallFont = TypefaceTokens.Condensed
     val LabelSmallLineHeight = 16.0.sp
     val LabelSmallSize = 11.sp
     val LabelSmallTracking = 0.5.sp

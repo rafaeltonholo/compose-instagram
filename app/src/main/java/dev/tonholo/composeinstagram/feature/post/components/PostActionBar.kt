@@ -30,7 +30,7 @@ import dev.tonholo.composeinstagram.ui.theme.Theme
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PostActionBar(
-    postCount: Int,
+    imageCount: Int,
     isPostLiked: Boolean,
     isPostSaved: Boolean,
     onLikeClick: () -> Unit,
@@ -62,7 +62,7 @@ fun PostActionBar(
                 tint = Theme.colors.onSurface,
             )
         }
-        if (postCount > 1) {
+        if (imageCount > 1) {
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -71,7 +71,7 @@ fun PostActionBar(
             ) {
                 HorizontalPagerIndicator(
                     pagerState = pagerState,
-                    pageCount = postCount,
+                    pageCount = imageCount,
                     activeColor = Theme.colors.onSurface,
                     inactiveColor = Theme.colors.onSurface.copy(alpha = 0.5f),
                 )
@@ -136,7 +136,7 @@ private fun Preview(
 ) {
     ComposeInstagramTheme {
         PostActionBar(
-            postCount = postActionBarParams.postCount,
+            imageCount = postActionBarParams.postCount,
             isPostLiked = postActionBarParams.isPostLiked,
             isPostSaved = postActionBarParams.isPostSaved,
             onLikeClick = { },
