@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Compose Instagram</string>
+    <string name="liked_by_text">Liked by&#160;</string>
+    <string name="and_conjunction">&#160;and&#160;</string>
+    <plurals name="liked_by_count_text">
+        <item quantity="one">and someone else</item>
+        <item quantity="other">another %d people</item>
+    </plurals>
 </resources>
