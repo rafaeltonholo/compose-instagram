@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,6 +24,7 @@ import dev.tonholo.composeinstagram.feature.home.components.StoryRow
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchHomePosts
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchStories
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchUserData
+import dev.tonholo.composeinstagram.feature.home.usercase.LikePost
 import dev.tonholo.composeinstagram.feature.post.ImagePost
 import dev.tonholo.composeinstagram.feature.post.components.NavigationBottomBar
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
@@ -36,10 +38,27 @@ fun HomeScreen(
             FetchUserData(FakeUserDao),
             FetchStories(FakeStoryApi),
             FetchHomePosts(FakePostApi),
+            LikePost(FakePostApi, FakeUserDao),
         )
     },
 ) {
     val state by viewModel.state.collectAsState()
+    val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(state.postLikeState) {
+        if (state.postLikeState.errorMessage?.isNotEmpty() == true) {
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = state.postLikeState.errorMessage.orEmpty(),
+            )
+        }
+    }
+    LaunchedEffect(state.postState) {
+        if (state.postState.errorMessage?.isNotEmpty() == true) {
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = state.postState.errorMessage.orEmpty(),
+            )
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -54,6 +73,7 @@ fun HomeScreen(
                 onUserProfileClick = { /*TODO*/ }
             )
         },
+        scaffoldState = scaffoldState,
     ) {
         LazyColumn(
             modifier = Modifier
@@ -89,7 +109,10 @@ fun HomeScreen(
                         likes = post.likes.toImmutableSet(),
                         postDate = post.postDate,
                         ownerComment = post.ownerComment,
-                        commentCount = post.comments?.size ?: 0
+                        commentCount = post.comments?.size ?: 0,
+                        onPostLiked = { liked ->
+                            viewModel.onPostLiked(liked, post)
+                        },
                     )
                 }
             }

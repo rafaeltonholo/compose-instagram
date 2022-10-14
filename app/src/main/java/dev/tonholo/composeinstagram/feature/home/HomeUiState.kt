@@ -24,8 +24,14 @@ data class PostState(
     val isEndReached: Boolean = false,
 )
 
+data class PostLikeState(
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
+)
+
 data class HomeUiState(
     val userState: UserState = UserState(),
     val storyState: StoryState = StoryState(),
     val postState: PostState = PostState(),
+    val postLikeState: PostLikeState = PostLikeState(),
 )

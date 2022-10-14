@@ -8,6 +8,7 @@ data class PostLike(
 )
 
 data class Post(
+    val id: String,
     val owner: User,
     val images: List<String>,
     val likes: Set<PostLike>,

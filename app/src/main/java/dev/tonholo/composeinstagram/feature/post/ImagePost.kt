@@ -1,17 +1,34 @@
 package dev.tonholo.composeinstagram.feature.post
 
 import android.content.res.Configuration
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -35,8 +52,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun ImagePost(
     userTag: UserTag,
@@ -50,8 +69,13 @@ fun ImagePost(
     likes: ImmutableSet<PostLike>? = null,
     ownerComment: String? = null,
     commentCount: Int = 0,
+    onPostLiked: (liked: Boolean) -> Unit = { },
 ) {
     val pagerState = rememberPagerState()
+
+    var shouldShowLikedIcon by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = modifier,
     ) {
@@ -65,6 +89,18 @@ fun ImagePost(
             HorizontalPager(
                 count = images.size,
                 state = pagerState,
+                modifier = Modifier.pointerInput(Unit) {
+                    detectTapGestures(
+                        onDoubleTap = {
+                            shouldShowLikedIcon = true
+                            onPostLiked(true)
+                            coroutineScope.launch {
+                                delay(500)
+                                shouldShowLikedIcon = false
+                            }
+                        }
+                    )
+                }
             ) { index ->
                 val image = images[index]
                 AsyncImage(
@@ -92,12 +128,28 @@ fun ImagePost(
                     )
                 }
             }
+
+            androidx.compose.animation.AnimatedVisibility(
+                visible = shouldShowLikedIcon,
+                enter = fadeIn(initialAlpha = 0.3f) + scaleIn(),
+                exit = scaleOut() + fadeOut(),
+                modifier = Modifier.align(Alignment.Center),
+            ) {
+                Image(
+                    imageVector = Icons.Filled.Favorite,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .align(Alignment.Center),
+                    colorFilter = ColorFilter.tint(Theme.colors.secondary),
+                )
+            }
         }
         PostActionBar(
             imageCount = images.size,
             isPostLiked = isPostLiked,
             isPostSaved = isPostSaved,
-            onLikeClick = { /*TODO*/ },
+            onLikeClick = { onPostLiked(!isPostLiked) },
             onCommentClick = { /*TODO*/ },
             onShareClick = { /*TODO*/ },
             onSaveClick = { /*TODO*/ },

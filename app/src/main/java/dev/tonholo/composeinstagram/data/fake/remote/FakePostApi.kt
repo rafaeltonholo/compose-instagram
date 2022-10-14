@@ -14,4 +14,10 @@ object FakePostApi : PostApi {
             .drop(cursor)
             .take(10)
     }
+
+    override suspend fun updatePost(post: Post): Boolean {
+        val index = FakeData.posts.indexOfFirst { storedPost -> storedPost.id == post.id }
+        FakeData.posts[index] = post
+        return true
+    }
 }

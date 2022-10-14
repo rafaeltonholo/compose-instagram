@@ -11,6 +11,7 @@ import io.bloco.faker.Faker
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.UUID
 import kotlin.random.Random
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -76,11 +77,12 @@ object FakeData {
         }
     }
 
-    val posts: List<Post> by lazy {
+    val posts: MutableList<Post> by lazy {
         val faker = Faker()
         val posts = List(1000) {
 
             val post = Post(
+                id = UUID.randomUUID().toString(),
                 owner = users[Random.nextInt(0, users.size)],
                 images = List(Random.nextInt(1, 11)) { generateRandomImage(1920, 1080) },
                 likes = List(Random.nextInt(0, 1000)) {
@@ -105,7 +107,7 @@ object FakeData {
             }
             post.copy(comments = comments)
         }
-        posts
+        posts.toMutableList()
     }
 
     private fun generateRandomImage(

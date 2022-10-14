@@ -7,4 +7,6 @@ interface PostApi {
         cursor: Int,
         limit: Int,
     ): List<Post>
+
+    suspend fun updatePost(post: Post): Boolean
 }

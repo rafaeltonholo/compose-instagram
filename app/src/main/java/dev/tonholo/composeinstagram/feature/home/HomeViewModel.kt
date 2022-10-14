@@ -3,9 +3,11 @@ package dev.tonholo.composeinstagram.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.tonholo.composeinstagram.common.Result
+import dev.tonholo.composeinstagram.domain.Post
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchHomePosts
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchStories
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchUserData
+import dev.tonholo.composeinstagram.feature.home.usercase.LikePost
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,8 +22,10 @@ class HomeViewModel(
     fetchUserData: FetchUserData,
     fetchStories: FetchStories,
     private val fetchHomePosts: FetchHomePosts,
+    private val likePost: LikePost,
 ) : ViewModel() {
     private val postState = MutableStateFlow(PostState())
+    private val postLikeState = MutableStateFlow(PostLikeState())
 
     val state: StateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
         .combine(fetchUserData()) { current, result ->
@@ -65,6 +69,9 @@ class HomeViewModel(
         .combine(postState) { current, newPostState ->
             current.copy(postState = newPostState)
         }
+        .combine(postLikeState) { current, newPostLikeState ->
+            current.copy(postLikeState = newPostLikeState)
+        }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), HomeUiState())
 
     init {
@@ -94,6 +101,37 @@ class HomeViewModel(
                             errorMessage = null,
                             isEndReached = result.data.isEmpty(),
                         )
+                    }
+                }
+            }
+        }
+    }
+
+    fun onPostLiked(liked: Boolean, post: Post) {
+        viewModelScope.launch {
+            likePost(liked = liked, post = post).collectLatest { result ->
+                postLikeState.update { state ->
+                    when (result) {
+                        is Result.Error -> state.copy(
+                            isLoading = false,
+                            errorMessage = result.message,
+                        )
+
+                        is Result.Loading -> state.copy(
+                            isLoading = true,
+                            errorMessage = null,
+                        )
+
+                        is Result.Success -> {
+                            val posts = postState.value.posts.orEmpty().toMutableList()
+                            val index = posts.indexOfFirst { it.id == post.id }
+                            posts[index] = result.data
+                            postState.update { it.copy(posts = posts.toImmutableList()) }
+                            state.copy(
+                                isLoading = false,
+                                errorMessage = null,
+                            )
+                        }
                     }
                 }
             }
