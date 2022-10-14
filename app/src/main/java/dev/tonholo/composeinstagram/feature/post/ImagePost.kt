@@ -42,6 +42,7 @@ import dev.tonholo.composeinstagram.domain.PostLike
 import dev.tonholo.composeinstagram.domain.UserTag
 import dev.tonholo.composeinstagram.extension.toTimestamp
 import dev.tonholo.composeinstagram.feature.post.components.PostActionBar
+import dev.tonholo.composeinstagram.feature.post.components.PostCommentBar
 import dev.tonholo.composeinstagram.feature.post.components.PostCommentSection
 import dev.tonholo.composeinstagram.feature.post.components.PostLikesBar
 import dev.tonholo.composeinstagram.feature.post.components.PostTitleBar
@@ -65,11 +66,13 @@ fun ImagePost(
     isPostLiked: Boolean,
     isPostSaved: Boolean,
     postDate: LocalDateTime,
+    currentUserProfileImageUrl: String,
     modifier: Modifier = Modifier,
     likes: ImmutableSet<PostLike>? = null,
     ownerComment: String? = null,
     commentCount: Int = 0,
     onPostLiked: (liked: Boolean) -> Unit = { },
+    onCommentClick: (suggestion: String?) -> Unit = {},
 ) {
     val pagerState = rememberPagerState()
 
@@ -150,7 +153,7 @@ fun ImagePost(
             isPostLiked = isPostLiked,
             isPostSaved = isPostSaved,
             onLikeClick = { onPostLiked(!isPostLiked) },
-            onCommentClick = { /*TODO*/ },
+            onCommentClick = { onCommentClick(null) },
             onShareClick = { /*TODO*/ },
             onSaveClick = { /*TODO*/ },
             pagerState = pagerState,
@@ -171,6 +174,15 @@ fun ImagePost(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 16.dp)
+        )
+
+        PostCommentBar(
+            profileIconUrl = currentUserProfileImageUrl,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            onClick = { onCommentClick(null) },
+            onSuggestionClick = onCommentClick
         )
 
         Text(
@@ -314,6 +326,7 @@ private fun Preview(
             isPostLiked,
             isPostSaved,
             postDate,
+            currentUserProfileImageUrl = "mock",
             likes = likes,
             ownerComment = ownerComment,
             commentCount = commentCount,

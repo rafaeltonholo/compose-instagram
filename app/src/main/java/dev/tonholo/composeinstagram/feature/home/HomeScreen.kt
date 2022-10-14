@@ -108,11 +108,13 @@ fun HomeScreen(
                         isPostSaved = false,
                         likes = post.likes.toImmutableSet(),
                         postDate = post.postDate,
+                        currentUserProfileImageUrl = state.userState.currentUser?.profileImage.orEmpty(),
                         ownerComment = post.ownerComment,
                         commentCount = post.comments?.size ?: 0,
                         onPostLiked = { liked ->
                             viewModel.onPostLiked(liked, post)
                         },
+                        onCommentClick = viewModel::onCommentClick
                     )
                 }
             }

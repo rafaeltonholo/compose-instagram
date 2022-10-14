@@ -1,5 +1,6 @@
 package dev.tonholo.composeinstagram.feature.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.tonholo.composeinstagram.common.Result
@@ -17,6 +18,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+private const val TAG = "HomeViewModel"
 
 class HomeViewModel(
     fetchUserData: FetchUserData,
@@ -136,5 +139,9 @@ class HomeViewModel(
                 }
             }
         }
+    }
+
+    fun onCommentClick(suggestion: String?) {
+        Log.d(TAG, "onCommentClick() called with: suggestion = $suggestion")
     }
 }
