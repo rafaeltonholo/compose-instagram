@@ -74,7 +74,7 @@ fun PostActionBar(
                 HorizontalPagerIndicator(
                     pagerState = pagerState,
                     pageCount = imageCount,
-                    activeColor = Theme.colors.onSurface,
+                    activeColor = Theme.colors.primary,
                     inactiveColor = Theme.colors.onSurface.copy(alpha = 0.5f),
                     indicatorWidth = 4.dp,
                     indicatorHeight = 4.dp,
