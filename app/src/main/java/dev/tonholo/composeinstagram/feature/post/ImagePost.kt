@@ -2,6 +2,8 @@ package dev.tonholo.composeinstagram.feature.post
 
 import android.content.res.Configuration
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -134,7 +136,12 @@ fun ImagePost(
 
             androidx.compose.animation.AnimatedVisibility(
                 visible = shouldShowLikedIcon,
-                enter = fadeIn(initialAlpha = 0.3f) + scaleIn(),
+                enter = fadeIn(initialAlpha = 0.3f) + scaleIn(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessMediumLow,
+                    )
+                ),
                 exit = scaleOut() + fadeOut(),
                 modifier = Modifier.align(Alignment.Center),
             ) {
