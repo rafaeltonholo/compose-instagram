@@ -26,7 +26,7 @@ import dev.tonholo.composeinstagram.feature.home.usercase.FetchStories
 import dev.tonholo.composeinstagram.feature.home.usercase.FetchUserData
 import dev.tonholo.composeinstagram.feature.home.usercase.LikePost
 import dev.tonholo.composeinstagram.feature.post.ImagePost
-import dev.tonholo.composeinstagram.feature.post.components.NavigationBottomBar
+import dev.tonholo.composeinstagram.feature.home.components.NavigationBottomBar
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet

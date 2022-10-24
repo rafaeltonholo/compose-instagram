@@ -1,4 +1,4 @@
-package dev.tonholo.composeinstagram.feature.post.components
+package dev.tonholo.composeinstagram.feature.home.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +36,7 @@ fun NavigationBottomBar(
     BottomAppBar(
         modifier = modifier,
         backgroundColor = Theme.colors.background,
+        elevation = 0.dp,
     ) {
         Row(
             modifier = Modifier.fillMaxSize()
