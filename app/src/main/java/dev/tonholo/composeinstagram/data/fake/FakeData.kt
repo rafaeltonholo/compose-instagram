@@ -19,7 +19,7 @@ import kotlin.time.toDuration
 object FakeData {
     val currentUser by lazy { users.first() }
 
-    private val users: List<User> by lazy {
+    val users: List<User> by lazy {
         val faker = Faker()
         List(100) {
             User(
