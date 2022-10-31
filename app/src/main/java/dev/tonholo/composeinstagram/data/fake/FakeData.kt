@@ -120,6 +120,7 @@ object FakeData {
                 to = users.filterNot { it == from }[Random.nextInt(0, users.size - 1)],
                 content = if (Random.nextBoolean()) faker.internet.slug() else faker.book.title(),
                 date = generateRandomDate(),
+                hasRead = Random.nextBoolean(),
             )
         }
     }

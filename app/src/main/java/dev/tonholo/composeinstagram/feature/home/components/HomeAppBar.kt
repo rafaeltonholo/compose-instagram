@@ -24,6 +24,7 @@ import dev.tonholo.composeinstagram.ui.theme.Theme
 @Composable
 fun HomeAppBar(
     modifier: Modifier = Modifier,
+    onMessengerIconClick: () -> Unit = {},
 ) {
     val outlineColor = Theme.colors.outline
     val density = LocalDensity.current
@@ -50,7 +51,11 @@ fun HomeAppBar(
         actions = {
             ActionIcon(imageVector = Icons.Outlined.AddBox)
             ActionIcon(imageVector = Icons.Outlined.FavoriteBorder)
-            ActionIcon(imageVector = Icons.Outlined.Message)
+            ActionIcon(
+                imageVector = Icons.Outlined.Message,
+                contentDescription = "Open messenger",
+                onClick = onMessengerIconClick,
+            )
         },
         elevation = 0.dp,
     )

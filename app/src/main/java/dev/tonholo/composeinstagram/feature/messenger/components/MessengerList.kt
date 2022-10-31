@@ -2,7 +2,9 @@ package dev.tonholo.composeinstagram.feature.messenger.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,7 +40,8 @@ fun MessengerList(
     LazyColumn(modifier = modifier) {
         stickyHeader {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .background(color = Theme.colors.background),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -59,13 +62,17 @@ fun MessengerList(
 
         if (messages.isEmpty()) {
             item {
-                Text(
-                    text = "No messages",
+                Box(
                     modifier = Modifier.fillMaxSize(),
-                    color = Theme.colors.onBackground,
-                    textAlign = TextAlign.Center,
-                    style = Theme.typography.displaySmall,
-                )
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "No messages",
+                        color = Theme.colors.onBackground,
+                        textAlign = TextAlign.Center,
+                        style = Theme.typography.displaySmall,
+                    )
+                }
             }
         }
 

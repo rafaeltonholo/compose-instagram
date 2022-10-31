@@ -7,4 +7,5 @@ data class Message(
     val to: User,
     val content: String,
     val date: LocalDateTime,
+    val hasRead: Boolean,
 )

@@ -43,7 +43,7 @@ import kotlinx.collections.immutable.toImmutableSet
 fun MessengerHeader(
     searchTerm: String?,
     modifier: Modifier = Modifier,
-    recentUsersInteractions: ImmutableSet<User> = persistentSetOf(),
+    frequentlyUserMessages: ImmutableSet<User> = persistentSetOf(),
     onSearchChange: (String) -> Unit = {},
     onRecentUserMessageClick: (User) -> Unit = {},
 ) {
@@ -58,6 +58,7 @@ fun MessengerHeader(
                 .fillMaxWidth()
                 .padding(16.dp),
             singleLine = true,
+            textStyle = Theme.typography.bodyMedium.copy(color = Theme.colors.onBackground),
         ) { innerTextField ->
             Row(
                 modifier = Modifier
@@ -87,15 +88,15 @@ fun MessengerHeader(
                 }
             }
         }
-        if (recentUsersInteractions.isNotEmpty()) {
+        if (frequentlyUserMessages.isNotEmpty()) {
             Spacer(Modifier.height(16.dp))
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                items(recentUsersInteractions.size) { index ->
-                    val user = recentUsersInteractions.elementAt(index)
+                items(frequentlyUserMessages.size) { index ->
+                    val user = frequentlyUserMessages.elementAt(index)
                     Column(modifier = Modifier.widthIn(max = 72.dp)) {
                         UserStoryIcon(
                             profileImageUrl = user.profileImage,
@@ -149,7 +150,7 @@ private fun Preview(
             searchTerm = null,
             modifier = Modifier
                 .fillMaxWidth(),
-            recentUsersInteractions = recent,
+            frequentlyUserMessages = recent,
         )
     }
 }

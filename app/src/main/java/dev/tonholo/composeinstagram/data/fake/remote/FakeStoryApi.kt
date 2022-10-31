@@ -2,6 +2,7 @@ package dev.tonholo.composeinstagram.data.fake.remote
 
 import dev.tonholo.composeinstagram.data.fake.FakeData
 import dev.tonholo.composeinstagram.data.remote.StoryApi
+import dev.tonholo.composeinstagram.domain.User
 import dev.tonholo.composeinstagram.domain.UserStory
 
 object FakeStoryApi : StoryApi {
@@ -14,4 +15,8 @@ object FakeStoryApi : StoryApi {
                 else -> 1
             }
         })
+
+    override suspend fun fetchStory(from: User): List<UserStory> = FakeData
+        .userStories
+        .filter { it.owner == from }
 }

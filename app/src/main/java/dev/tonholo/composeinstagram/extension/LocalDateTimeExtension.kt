@@ -9,17 +9,24 @@ private const val ONE_DAY = ONE_HOUR * 24
 private const val ONE_WEEK = ONE_DAY * 7
 private const val ONE_YEAR = ONE_DAY * 365
 
-fun LocalDateTime?.toTimestamp(): String {
+fun LocalDateTime?.toTimestamp(
+    yearsLabel: String = "years ago",
+    weeksLabel: String = "weeks ago",
+    daysLabel: String = "days ago",
+    hoursLabel: String = "hours ago",
+    minutesLabel: String = "minutes ago",
+    nowLabel: String = "now",
+): String {
     return this?.let { date ->
         val zone = ZoneId.systemDefault()
         val timeDelta = LocalDateTime.now().atZone(zone).toEpochSecond() - date.atZone(zone).toEpochSecond()
         return when {
-            timeDelta > ONE_YEAR -> "${timeDelta / ONE_YEAR} years ago"
-            timeDelta >= ONE_WEEK -> "${timeDelta / ONE_WEEK} weeks ago"
-            timeDelta > ONE_DAY -> "${timeDelta / ONE_DAY} days ago"
-            timeDelta > ONE_HOUR -> "${timeDelta / ONE_HOUR} hours ago"
-            timeDelta > ONE_MINUTE -> "${timeDelta / ONE_MINUTE} minutes ago"
-            else -> "now"
+            timeDelta > ONE_YEAR -> "${timeDelta / ONE_YEAR} $yearsLabel"
+            timeDelta >= ONE_WEEK -> "${timeDelta / ONE_WEEK} $weeksLabel"
+            timeDelta > ONE_DAY -> "${timeDelta / ONE_DAY} $daysLabel"
+            timeDelta > ONE_HOUR -> "${timeDelta / ONE_HOUR} $hoursLabel"
+            timeDelta > ONE_MINUTE -> "${timeDelta / ONE_MINUTE} $minutesLabel"
+            else -> nowLabel
         }
     } ?: ""
 }
