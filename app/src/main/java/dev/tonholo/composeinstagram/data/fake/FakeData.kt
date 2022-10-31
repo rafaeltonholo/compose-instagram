@@ -1,6 +1,7 @@
 package dev.tonholo.composeinstagram.data.fake
 
 import dev.tonholo.composeinstagram.domain.Comment
+import dev.tonholo.composeinstagram.domain.Message
 import dev.tonholo.composeinstagram.domain.Post
 import dev.tonholo.composeinstagram.domain.PostLike
 import dev.tonholo.composeinstagram.domain.Story
@@ -108,6 +109,19 @@ object FakeData {
             post.copy(comments = comments)
         }
         posts.toMutableList()
+    }
+
+    val messages: List<Message> by lazy {
+        val faker = Faker()
+        List(10000) {
+            val from = users[Random.nextInt(0, users.size)]
+            Message(
+                from = from,
+                to = users.filterNot { it == from }[Random.nextInt(0, users.size - 1)],
+                content = if (Random.nextBoolean()) faker.internet.slug() else faker.book.title(),
+                date = generateRandomDate(),
+            )
+        }
     }
 
     private fun generateRandomImage(
