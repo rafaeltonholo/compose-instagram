@@ -21,4 +21,8 @@ object FakeMessengerApi : MessengerApi {
         .sortedByDescending { it.second }
         .map { it.first }
         .take(10)
+
+    override suspend fun getNonReadMessageCount(user: User): Int =
+        requestReceivedMessages(user)
+            .count { !it.hasRead }
 }

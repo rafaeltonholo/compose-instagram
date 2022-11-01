@@ -30,6 +30,7 @@ data class PostLikeState(
 )
 
 data class HomeUiState(
+    val messagesCount: Int = 0,
     val userState: UserState = UserState(),
     val storyState: StoryState = StoryState(),
     val postState: PostState = PostState(),

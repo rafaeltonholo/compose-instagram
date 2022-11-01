@@ -1,6 +1,7 @@
 package dev.tonholo.composeinstagram.feature.messenger
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,8 @@ fun MessengerScreen(
     onNavigateBackClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsState()
+
+    BackHandler(onBack = onNavigateBackClick)
 
     Scaffold(
         topBar = {

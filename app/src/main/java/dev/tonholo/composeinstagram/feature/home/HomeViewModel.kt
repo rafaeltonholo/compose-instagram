@@ -4,6 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.tonholo.composeinstagram.common.Result
+import dev.tonholo.composeinstagram.data.fake.local.FakeUserDao
+import dev.tonholo.composeinstagram.data.fake.remote.FakePostApi
+import dev.tonholo.composeinstagram.data.fake.remote.FakeStoryApi
+import dev.tonholo.composeinstagram.data.local.NotificationService
 import dev.tonholo.composeinstagram.domain.Post
 import dev.tonholo.composeinstagram.feature.home.usecase.FetchHomePosts
 import dev.tonholo.composeinstagram.feature.home.usecase.FetchStories
@@ -22,10 +26,11 @@ import kotlinx.coroutines.launch
 private const val TAG = "HomeViewModel"
 
 class HomeViewModel(
-    fetchUserData: FetchUserData,
-    fetchStories: FetchStories,
-    private val fetchHomePosts: FetchHomePosts,
-    private val likePost: LikePost,
+    fetchUserData: FetchUserData = FetchUserData(FakeUserDao),
+    fetchStories: FetchStories = FetchStories(FakeStoryApi),
+    private val fetchHomePosts: FetchHomePosts = FetchHomePosts(FakePostApi),
+    private val likePost: LikePost = LikePost(FakePostApi, FakeUserDao),
+    private val notificationService: NotificationService = NotificationService(),
 ) : ViewModel() {
     private val postState = MutableStateFlow(PostState())
     private val postLikeState = MutableStateFlow(PostLikeState())
@@ -47,7 +52,15 @@ class HomeViewModel(
                     currentUser = result.data,
                 )
             }
-            current.copy(userState = newUserState)
+
+            val messagesCount = if (result is Result.Success) {
+                notificationService.getNonReadMessageCount(result.data)
+            } else 0
+
+            current.copy(
+                messagesCount = messagesCount,
+                userState = newUserState,
+            )
         }
         .combine(fetchStories()) { current, stories ->
             val currentStoryState = current.storyState
