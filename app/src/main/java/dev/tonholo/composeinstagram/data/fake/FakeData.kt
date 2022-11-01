@@ -118,7 +118,13 @@ object FakeData {
             Message(
                 from = from,
                 to = users.filterNot { it == from }[Random.nextInt(0, users.size - 1)],
-                content = if (Random.nextBoolean()) faker.internet.slug() else faker.book.title(),
+                content = when {
+                    Random.nextBoolean() -> faker.lorem.paragraph()
+                    Random.nextBoolean() -> faker.lorem.question()
+                    Random.nextBoolean() -> faker.lorem.sentence()
+                    Random.nextBoolean() -> faker.lorem.supplemental()
+                    else -> faker.book.title()
+                },
                 date = generateRandomDate(),
                 hasRead = Random.nextBoolean(),
             )
