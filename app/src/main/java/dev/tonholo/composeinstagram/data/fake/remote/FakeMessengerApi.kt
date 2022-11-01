@@ -12,4 +12,13 @@ object FakeMessengerApi : MessengerApi {
         .filter { message -> message.to == user }
         .sortedByDescending { it.date }
         .distinctBy { it.from }
+
+    override suspend fun fetchFrequentlyUserMessages(user: User): List<User> = FakeData
+        .messages
+        .groupBy { it.from }
+        .mapValues { entry -> entry.value.count() }
+        .toList()
+        .sortedByDescending { it.second }
+        .map { it.first }
+        .take(10)
 }
