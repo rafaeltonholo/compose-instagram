@@ -1,4 +1,4 @@
-package dev.tonholo.composeinstagram.feature.home.usercase
+package dev.tonholo.composeinstagram.feature.home.usecase
 
 import android.util.Log
 import dev.tonholo.composeinstagram.data.remote.PostApi

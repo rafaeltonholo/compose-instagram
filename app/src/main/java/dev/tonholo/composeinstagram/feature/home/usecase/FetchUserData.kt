@@ -1,4 +1,4 @@
-package dev.tonholo.composeinstagram.feature.home.usercase
+package dev.tonholo.composeinstagram.feature.home.usecase
 
 import dev.tonholo.composeinstagram.common.Result
 import dev.tonholo.composeinstagram.data.local.UserDao

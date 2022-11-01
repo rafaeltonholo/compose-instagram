@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.tonholo.composeinstagram.common.Result
 import dev.tonholo.composeinstagram.domain.Post
-import dev.tonholo.composeinstagram.feature.home.usercase.FetchHomePosts
-import dev.tonholo.composeinstagram.feature.home.usercase.FetchStories
-import dev.tonholo.composeinstagram.feature.home.usercase.FetchUserData
-import dev.tonholo.composeinstagram.feature.home.usercase.LikePost
+import dev.tonholo.composeinstagram.feature.home.usecase.FetchHomePosts
+import dev.tonholo.composeinstagram.feature.home.usecase.FetchStories
+import dev.tonholo.composeinstagram.feature.home.usecase.FetchUserData
+import dev.tonholo.composeinstagram.feature.home.usecase.LikePost
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

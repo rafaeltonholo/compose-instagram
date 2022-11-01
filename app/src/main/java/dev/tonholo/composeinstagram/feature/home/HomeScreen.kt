@@ -26,10 +26,10 @@ import dev.tonholo.composeinstagram.data.fake.remote.FakeStoryApi
 import dev.tonholo.composeinstagram.feature.home.components.HomeAppBar
 import dev.tonholo.composeinstagram.feature.home.components.HomeContent
 import dev.tonholo.composeinstagram.feature.home.components.NavigationBottomBar
-import dev.tonholo.composeinstagram.feature.home.usercase.FetchHomePosts
-import dev.tonholo.composeinstagram.feature.home.usercase.FetchStories
-import dev.tonholo.composeinstagram.feature.home.usercase.FetchUserData
-import dev.tonholo.composeinstagram.feature.home.usercase.LikePost
+import dev.tonholo.composeinstagram.feature.home.usecase.FetchHomePosts
+import dev.tonholo.composeinstagram.feature.home.usecase.FetchStories
+import dev.tonholo.composeinstagram.feature.home.usecase.FetchUserData
+import dev.tonholo.composeinstagram.feature.home.usecase.LikePost
 import dev.tonholo.composeinstagram.feature.messenger.MessengerScreen
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
 import kotlinx.coroutines.launch
