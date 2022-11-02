@@ -3,6 +3,7 @@ package dev.tonholo.composeinstagram.feature.post
 import android.content.res.Configuration
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -10,6 +11,8 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.rememberTransformableState
+import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +25,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +33,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
@@ -108,14 +116,51 @@ fun ImagePost(
                 }
             ) { index ->
                 val image = images[index]
-                AsyncImage(
-                    model = image,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 150.dp, 450.dp),
-                    contentScale = ContentScale.FillHeight,
+                var scale by remember { mutableStateOf(1f) }
+                var offset by remember { mutableStateOf(Offset.Zero) }
+                val transformableState = rememberTransformableState { zoomChange, panChange, _ ->
+                    if (zoomChange > 0) {
+                        scale = (scale * zoomChange).coerceIn(1f..3f)
+                        offset = panChange * scale
+                    }
+                }
+
+                val scaleAnimated by animateFloatAsState(
+                    targetValue = if (transformableState.isTransformInProgress) {
+                        scale
+                    } else {
+                        1f
+                    }
                 )
+
+                LaunchedEffect(transformableState.isTransformInProgress) {
+                    if (!transformableState.isTransformInProgress) {
+                        scale = 1f
+                        offset = Offset.Zero
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .clip(RectangleShape)
+                        .transformable(transformableState)
+                ) {
+                    AsyncImage(
+                        model = image,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 150.dp, 450.dp)
+                            .align(Alignment.Center)
+                            .graphicsLayer(
+                                scaleX = scaleAnimated,
+                                scaleY = scaleAnimated,
+                                translationX = offset.x,
+                                translationY = offset.y,
+                            ),
+                        contentScale = ContentScale.FillHeight,
+                    )
+                }
             }
             if (images.size > 1) {
                 Surface(
