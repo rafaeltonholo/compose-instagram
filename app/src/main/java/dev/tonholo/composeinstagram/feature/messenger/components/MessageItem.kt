@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -75,6 +76,7 @@ fun MessageItem(
             )
             Row(
                 modifier = Modifier.wrapContentWidth(),
+                horizontalArrangement = Arrangement.Start
             ) {
                 Text(
                     text = message.messageContent,
@@ -84,6 +86,7 @@ fun MessageItem(
                     ),
                     maxLines = 1,
                     style = Theme.typography.labelMedium,
+                    modifier = Modifier.weight(1f, fill = false),
                 )
                 Text(
                     text = " - ${message.sentAt}",
@@ -92,7 +95,6 @@ fun MessageItem(
                         alpha = if (message.isNotRead) 1f else 0.5f
                     ),
                     maxLines = 1,
-                    modifier = Modifier.weight(1f), // TODO: Fix show when text content overflow.
                     style = Theme.typography.labelMedium,
                 )
             }
