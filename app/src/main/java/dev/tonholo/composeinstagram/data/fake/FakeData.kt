@@ -126,7 +126,7 @@ object FakeData {
                     else -> faker.book.title()
                 },
                 date = generateRandomDate(),
-                hasRead = Random.nextBoolean(),
+                hasRead = Random(System.currentTimeMillis()).nextBoolean(),
             )
         }
     }
