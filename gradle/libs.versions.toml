@@ -5,7 +5,7 @@ minSdk = "26"
 versionCode = "1"
 versionName = "1.0"
 
-androidGradle = "8.0.0-alpha06"
+androidGradle = "8.0.0-alpha07"
 kotlin = "1.7.10"
 
 accompanist = "0.25.1"
