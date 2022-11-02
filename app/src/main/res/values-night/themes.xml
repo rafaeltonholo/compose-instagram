@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.ComposeInstagram" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.ComposeInstagram" parent="android:Theme.Material.NoActionBar">
         <item name="android:statusBarColor">@color/statusBar</item>
         <item name="android:background">@color/statusBar</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorBackground">@color/statusBar</item>
     </style>
 </resources>

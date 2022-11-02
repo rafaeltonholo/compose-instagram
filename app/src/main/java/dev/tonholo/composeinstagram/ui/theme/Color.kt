@@ -1,8 +1,8 @@
 package dev.tonholo.composeinstagram.ui.theme
 
-import androidx.compose.material.Colors
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
@@ -31,35 +31,33 @@ interface AppColors {
     val outline: Color
     val onOutline: Color
 
-    fun toMaterial(darkTheme: Boolean): Colors = if (darkTheme) {
-        darkColors(
+    fun toMaterial(darkTheme: Boolean): ColorScheme = if (darkTheme) {
+        darkColorScheme(
             primary = primary,
-            primaryVariant = primary,
-            secondary = secondary,
-            secondaryVariant = secondary,
-            background = background,
-            surface = surface,
-            error = error,
             onPrimary = onPrimary,
+            secondary = secondary,
             onSecondary = onSecondary,
+            background = background,
             onBackground = onBackground,
+            surface = surface,
             onSurface = onSurface,
+            error = error,
             onError = onError,
+            outline = outline,
         )
     } else {
-        lightColors(
+        lightColorScheme(
             primary = primary,
-            primaryVariant = primary,
-            secondary = secondary,
-            secondaryVariant = secondary,
-            background = background,
-            surface = surface,
-            error = error,
             onPrimary = onPrimary,
+            secondary = secondary,
             onSecondary = onSecondary,
+            background = background,
             onBackground = onBackground,
+            surface = surface,
             onSurface = onSurface,
+            error = error,
             onError = onError,
+            outline = outline,
         )
     }
 }

@@ -10,11 +10,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddBox
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Message
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
 import dev.tonholo.composeinstagram.ui.theme.Theme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeAppBar(
     messagesCount: Int,
@@ -53,11 +56,11 @@ fun HomeAppBar(
                     strokeWidth = strokeWidth,
                 )
             },
-        backgroundColor = Theme.colors.background,
         title = {
             Text(
                 text = "Instagram",
                 style = Theme.typography.headlineSmall,
+                color = Theme.colors.onBackground,
             )
         },
         actions = {
@@ -70,7 +73,10 @@ fun HomeAppBar(
                 onClick = onMessengerIconClick,
             )
         },
-        elevation = 0.dp,
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = Theme.colors.background,
+            titleContentColor = Theme.colors.onBackground,
+        )
     )
 }
 
@@ -112,8 +118,7 @@ private fun ActionIcon(
                                     radius = size.maxDimension / 2
                                 )
                             }
-                            .padding(1.dp)
-                        ,
+                            .padding(1.dp),
                         textAlign = TextAlign.Center,
                         style = Theme.typography.labelSmall,
                         color = Theme.colors.onSecondary,

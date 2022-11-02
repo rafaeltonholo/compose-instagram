@@ -8,22 +8,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.VideoCall
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import dev.tonholo.composeinstagram.domain.UserTag
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
 import dev.tonholo.composeinstagram.ui.theme.Theme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessengerAppBar(
     userTag: UserTag,
@@ -35,7 +37,6 @@ fun MessengerAppBar(
 ) {
     TopAppBar(
         modifier = modifier,
-        backgroundColor = Theme.colors.background,
         title = {
             Row(
                 modifier = Modifier.clickable(
@@ -82,7 +83,9 @@ fun MessengerAppBar(
                 )
             }
         },
-        elevation = 0.dp,
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = Theme.colors.background,
+        )
     )
 }
 

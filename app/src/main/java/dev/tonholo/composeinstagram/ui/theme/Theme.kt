@@ -1,8 +1,9 @@
 package dev.tonholo.composeinstagram.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -20,12 +21,12 @@ object Theme {
         get() = LocalAppColors.current
 
     /**
-     * Retrieves the current [AppTypography] at the call site's position in the hierarchy.
+     * Retrieves the current [Typography] at the call site's position in the hierarchy.
      */
-    val typography: AppTypography
+    val typography: Typography
         @Composable
         @ReadOnlyComposable
-        get() = LocalTypography.current
+        get() = MaterialTheme.typography
 
     /**
      * Retrieves the current [Shapes] at the call site's position in the hierarchy.
@@ -46,12 +47,11 @@ fun ComposeInstagramTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @
     }
 
     CompositionLocalProvider(
-        LocalTypography provides Typography,
         LocalAppColors provides colors,
     ) {
         MaterialTheme(
-            colors = colors.toMaterial(darkTheme),
-            typography = Typography.toMaterial(),
+            colorScheme = colors.toMaterial(darkTheme),
+            typography = Typography,
             shapes = Shapes,
             content = content
         )

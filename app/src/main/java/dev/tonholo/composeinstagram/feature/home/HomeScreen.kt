@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,19 +34,19 @@ private const val STORY_PAGE = 0
 private const val MAIN_PAGE = 1
 private const val MESSENGER_PAGE = 2
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-    val scaffoldState = rememberScaffoldState()
     val pagerState = rememberPagerState(initialPage = MAIN_PAGE)
     val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(state.postLikeState) {
         if (state.postLikeState.errorMessage?.isNotEmpty() == true) {
-            scaffoldState.snackbarHostState.showSnackbar(
+            snackbarHostState.showSnackbar(
                 message = state.postLikeState.errorMessage.orEmpty(),
             )
         }
@@ -51,7 +54,7 @@ fun HomeScreen(
 
     LaunchedEffect(state.postState) {
         if (state.postState.errorMessage?.isNotEmpty() == true) {
-            scaffoldState.snackbarHostState.showSnackbar(
+            snackbarHostState.showSnackbar(
                 message = state.postState.errorMessage.orEmpty(),
             )
         }
@@ -89,7 +92,7 @@ fun HomeScreen(
                         onUserProfileClick = { /*TODO*/ }
                     )
                 },
-                scaffoldState = scaffoldState,
+                snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
             ) {
                 HomeContent(
                     storyItems = state.storyState.storyItems,
