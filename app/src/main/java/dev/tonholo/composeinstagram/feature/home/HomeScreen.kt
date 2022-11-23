@@ -27,6 +27,7 @@ import dev.tonholo.composeinstagram.feature.home.components.HomeAppBar
 import dev.tonholo.composeinstagram.feature.home.components.HomeContent
 import dev.tonholo.composeinstagram.feature.home.components.NavigationBottomBar
 import dev.tonholo.composeinstagram.feature.messenger.MessengerScreen
+import dev.tonholo.composeinstagram.navigation.Route
 import dev.tonholo.composeinstagram.ui.theme.ComposeInstagramTheme
 import kotlinx.coroutines.launch
 
@@ -38,6 +39,7 @@ private const val MESSENGER_PAGE = 2
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
+    navigateTo: suspend (Route) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState(initialPage = MAIN_PAGE)
@@ -89,7 +91,7 @@ fun HomeScreen(
                         onSearchClick = { /*TODO*/ },
                         onReelsClick = { /*TODO*/ },
                         onShopClick = { /*TODO*/ },
-                        onUserProfileClick = { /*TODO*/ }
+                        onUserProfileClick = { coroutineScope.launch { navigateTo(Route.Profile) } }
                     )
                 },
                 snackbarHost = { SnackbarHost(hostState = snackbarHostState) }

@@ -6,6 +6,7 @@ import dev.tonholo.composeinstagram.domain.Post
 import dev.tonholo.composeinstagram.domain.PostLike
 import dev.tonholo.composeinstagram.domain.Story
 import dev.tonholo.composeinstagram.domain.User
+import dev.tonholo.composeinstagram.domain.UserFollow
 import dev.tonholo.composeinstagram.domain.UserStory
 import dev.tonholo.composeinstagram.domain.UserTag
 import io.bloco.faker.Faker
@@ -22,7 +23,7 @@ object FakeData {
 
     val users: List<User> by lazy {
         val faker = Faker()
-        List(100) {
+        List(1_000) {
             User(
                 profileImage = if (it == 0) {
                     "https://i.picsum.photos/id/582/1920/1080.jpg?hmac=VrdLg-rz2_YPYMHM4CgQbfjyn4swqF-25M4CK8B2F5o"
@@ -128,6 +129,19 @@ object FakeData {
                 date = generateRandomDate(),
                 hasRead = Random(System.currentTimeMillis()).nextBoolean(),
             )
+        }
+    }
+
+    val userFollows: Set<UserFollow> by lazy {
+        buildSet {
+            users.forEach { user ->
+                repeat(Random.nextInt(1, users.size)) {
+                    val random = users.random()
+                    if (random != user) {
+                        add(UserFollow(user = user, follow = random))
+                    }
+                }
+            }
         }
     }
 

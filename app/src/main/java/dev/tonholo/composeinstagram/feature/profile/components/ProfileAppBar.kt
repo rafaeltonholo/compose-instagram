@@ -34,7 +34,7 @@ import dev.tonholo.composeinstagram.ui.theme.Theme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileAppBar(
-    userTag: UserTag,
+    userTag: UserTag?,
     isPrivateAccount: Boolean,
     modifier: Modifier = Modifier,
     onUserNameClick: () -> Unit = {},
@@ -62,7 +62,7 @@ fun ProfileAppBar(
                     Spacer(modifier = Modifier.width(4.dp))
                 }
                 Text(
-                    text = userTag.tag,
+                    text = userTag?.tag.orEmpty(),
                     style = Theme.typography.titleMedium,
                     color = Theme.colors.onBackground,
                 )

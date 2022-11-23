@@ -40,8 +40,8 @@ fun ProfileHeader(
     profileImageUrl: String,
     hasStory: Boolean,
     postsCount: Int,
-    flowersCount: Int,
-    flowingCount: Int,
+    followersCount: Int,
+    followingCount: Int,
     modifier: Modifier = Modifier,
     onUserProfileClick: () -> Unit = {},
 ) {
@@ -53,7 +53,7 @@ fun ProfileHeader(
             UserStoryIcon(
                 profileImageUrl = profileImageUrl,
                 hasStory = hasStory,
-                modifier = Modifier.size(100.dp),
+                modifier = Modifier.size(80.dp),
                 onClick = onUserProfileClick,
                 shouldShowAddIcon = false,
             )
@@ -63,12 +63,12 @@ fun ProfileHeader(
                 modifier = Modifier.weight(0.3f)
             )
             ProfileInfoColumn(
-                count = flowersCount,
+                count = followersCount,
                 label = "Followers",
                 modifier = Modifier.weight(0.3f)
             )
             ProfileInfoColumn(
-                count = flowingCount,
+                count = followingCount,
                 label = "Following",
                 modifier = Modifier.weight(0.3f)
             )
@@ -194,8 +194,8 @@ private fun Preview(
             profileImageUrl = "",
             hasStory = params.hasStory,
             postsCount = params.postsCount,
-            flowersCount = params.flowersCount,
-            flowingCount = params.flowingCount,
+            followersCount = params.flowersCount,
+            followingCount = params.flowingCount,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
