@@ -32,6 +32,20 @@ object FakeData {
                 },
                 name = faker.name.name(),
                 userTag = UserTag(faker.internet.userName()),
+                bio = when {
+                    Random.nextBoolean() -> faker.lorem.paragraph()
+                    Random.nextBoolean() -> faker.lorem.question()
+                    Random.nextBoolean() -> faker.lorem.sentence()
+                    Random.nextBoolean() -> listOf(
+                        "😅",
+                        "🛫",
+                        "🙌",
+                        "😊",
+                        "🔥",
+                        "❤️",
+                    ).random()
+                    else -> faker.book.title()
+                }
             )
         }
     }

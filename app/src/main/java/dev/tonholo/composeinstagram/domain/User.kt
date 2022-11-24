@@ -7,4 +7,5 @@ data class User(
     val profileImage: String,
     val name: String,
     @Stable val userTag: UserTag,
+    val bio: String?,
 )
