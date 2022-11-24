@@ -3,6 +3,7 @@ package dev.tonholo.composeinstagram.data.fake.remote
 import dev.tonholo.composeinstagram.data.fake.FakeData
 import dev.tonholo.composeinstagram.data.remote.PostApi
 import dev.tonholo.composeinstagram.domain.Post
+import dev.tonholo.composeinstagram.domain.User
 
 object FakePostApi : PostApi {
     override suspend fun getHomePosts(
@@ -20,4 +21,9 @@ object FakePostApi : PostApi {
         FakeData.posts[index] = post
         return true
     }
+
+    override suspend fun getPosts(fromUser: User): List<Post> =
+        FakeData.posts
+            .filter { post -> post.owner == fromUser }
+            .sortedByDescending { it.postDate }
 }

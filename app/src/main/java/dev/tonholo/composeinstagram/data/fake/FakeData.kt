@@ -45,7 +45,8 @@ object FakeData {
                         "❤️",
                     ).random()
                     else -> faker.book.title()
-                }
+                },
+                isPrivate = Random.nextBoolean(),
             )
         }
     }
@@ -54,11 +55,11 @@ object FakeData {
         val faker = Faker()
         listOf(
             UserStory(
-                owner = users[Random.nextInt(0, users.size)],
+                owner = users.random(),
                 stories = listOf(),
             )
         ) + List(10) {
-            val user = users[Random.nextInt(0, users.size)]
+            val user = users.random()
             UserStory(
                 owner = user,
                 stories = List(Random.nextInt(0, 5)) {
@@ -95,16 +96,15 @@ object FakeData {
 
     val posts: MutableList<Post> by lazy {
         val faker = Faker()
-        val posts = List(1000) {
-
+        fun post(user: User): Post {
             val post = Post(
                 id = UUID.randomUUID().toString(),
-                owner = users[Random.nextInt(0, users.size)],
+                owner = user,
                 images = List(Random.nextInt(1, 11)) { generateRandomImage(1920, 1080) },
                 likes = List(Random.nextInt(0, 1000)) {
-                    val user = users[Random.nextInt(0, users.size)]
+                    val likeUser = users.random()
                     PostLike(
-                        userTag = user.userTag,
+                        userTag = likeUser.userTag,
                         profileImageUrl = user.profileImage,
                     )
                 }.toSet(),
@@ -115,13 +115,19 @@ object FakeData {
 
             val comments = List(Random.nextInt(0, 10)) {
                 Comment(
-                    owner = users[Random.nextInt(0, users.size)],
+                    owner = users.random(),
                     post = post,
                     text = faker.internet.slug(),
                     likes = Random.nextInt(0, 1000),
                 )
             }
-            post.copy(comments = comments)
+            return post.copy(comments = comments)
+        }
+
+        val posts = List(100) {
+            post(currentUser)
+        } + List(1_000) {
+            post(users.filterNot { it == currentUser }.random())
         }
         posts.toMutableList()
     }
@@ -129,7 +135,7 @@ object FakeData {
     val messages: List<Message> by lazy {
         val faker = Faker()
         List(10000) {
-            val from = users[Random.nextInt(0, users.size)]
+            val from = users.random()
             Message(
                 from = from,
                 to = users.filterNot { it == from }[Random.nextInt(0, users.size - 1)],

@@ -8,4 +8,5 @@ data class User(
     val name: String,
     @Stable val userTag: UserTag,
     val bio: String?,
+    val isPrivate: Boolean,
 )

@@ -117,7 +117,7 @@ private fun OthersProfileActions(
             )
         }
     }
-    if (!isPrivate) {
+    if (!isPrivate || isFollowing) {
         ActionButton(
             onClick = onMessageClick,
             modifier = modifier,
@@ -158,7 +158,7 @@ private class ProfileActionsSectionParamCol : CollectionPreviewParameterProvider
             user = FakeData.currentUser,
             bio = "",
             hasStory = false,
-            postsCount = 0,
+            posts = emptyList(),
             followersCount = 0,
             followingCount = 0,
         ),
@@ -166,7 +166,7 @@ private class ProfileActionsSectionParamCol : CollectionPreviewParameterProvider
             user = FakeData.currentUser,
             bio = "",
             hasStory = false,
-            postsCount = 0,
+            posts = emptyList(),
             followersCount = 0,
             followingCount = 0,
             isFollowing = false,
@@ -176,7 +176,7 @@ private class ProfileActionsSectionParamCol : CollectionPreviewParameterProvider
             user = FakeData.currentUser,
             bio = "",
             hasStory = false,
-            postsCount = 0,
+            posts = emptyList(),
             followersCount = 0,
             followingCount = 0,
             isFollowing = true,
@@ -186,7 +186,7 @@ private class ProfileActionsSectionParamCol : CollectionPreviewParameterProvider
             user = FakeData.currentUser,
             bio = "",
             hasStory = false,
-            postsCount = 0,
+            posts = emptyList(),
             followersCount = 0,
             followingCount = 0,
             isFollowing = false,
@@ -196,7 +196,7 @@ private class ProfileActionsSectionParamCol : CollectionPreviewParameterProvider
             user = FakeData.currentUser,
             bio = "",
             hasStory = false,
-            postsCount = 0,
+            posts = emptyList(),
             followersCount = 0,
             followingCount = 0,
             isFollowing = true,

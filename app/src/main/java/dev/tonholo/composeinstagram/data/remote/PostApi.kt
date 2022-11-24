@@ -1,6 +1,7 @@
 package dev.tonholo.composeinstagram.data.remote
 
 import dev.tonholo.composeinstagram.domain.Post
+import dev.tonholo.composeinstagram.domain.User
 
 interface PostApi {
     suspend fun getHomePosts(
@@ -9,4 +10,6 @@ interface PostApi {
     ): List<Post>
 
     suspend fun updatePost(post: Post): Boolean
+
+    suspend fun getPosts(fromUser: User): List<Post>
 }
