@@ -45,6 +45,7 @@ fun HomeScreen(
     val pagerState = rememberPagerState(initialPage = MAIN_PAGE)
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val events by viewModel.events.collectAsState(initial = HomeScreenEvent.None)
 
     LaunchedEffect(state.postLikeState) {
         if (state.postLikeState.errorMessage?.isNotEmpty() == true) {
@@ -59,6 +60,15 @@ fun HomeScreen(
             snackbarHostState.showSnackbar(
                 message = state.postState.errorMessage.orEmpty(),
             )
+        }
+    }
+
+    LaunchedEffect(events) {
+        when (val currentEvent = events) {
+            is HomeScreenEvent.NavigateToProfile -> navigateTo(Route.Profile(currentEvent.user))
+            HomeScreenEvent.None -> {
+                // no-op
+            }
         }
     }
 
@@ -91,7 +101,7 @@ fun HomeScreen(
                         onSearchClick = { /*TODO*/ },
                         onReelsClick = { /*TODO*/ },
                         onShopClick = { /*TODO*/ },
-                        onUserProfileClick = { coroutineScope.launch { navigateTo(Route.Profile) } }
+                        onUserProfileClick = viewModel::onUserProfileClick,
                     )
                 },
                 snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
@@ -106,6 +116,7 @@ fun HomeScreen(
                     onFetchNextPost = viewModel::fetchNextPosts,
                     onPostLiked = viewModel::onPostLiked,
                     onCommentClick = viewModel::onCommentClick,
+                    onUserTagClick = viewModel::onUserTagClick,
                     modifier = Modifier
                         .padding(it),
                 )

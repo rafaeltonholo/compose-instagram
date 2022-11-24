@@ -83,6 +83,7 @@ fun ImagePost(
     commentCount: Int = 0,
     onPostLiked: (liked: Boolean) -> Unit = { },
     onCommentClick: (suggestion: String?) -> Unit = {},
+    onUserTagClick: (UserTag) -> Unit = {},
 ) {
     val pagerState = rememberPagerState()
 
@@ -97,6 +98,7 @@ fun ImagePost(
             profileImageUrl = profileImageUrl,
             hasStory = hasStory,
             modifier = Modifier.fillMaxWidth(),
+            onUserTagClick = onUserTagClick,
         )
         Box {
             HorizontalPager(

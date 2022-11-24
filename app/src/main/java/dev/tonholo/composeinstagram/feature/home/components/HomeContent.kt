@@ -27,6 +27,7 @@ fun HomeContent(
     onFetchNextPost: () -> Unit,
     onPostLiked: (Boolean, Post) -> Unit,
     onCommentClick: (String?) -> Unit,
+    onUserTagClick: (UserTag) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -59,15 +60,16 @@ fun HomeContent(
                     images = post.images.toImmutableList(),
                     isPostLiked = post.likes.any { like -> like.userTag == currentUserTag },
                     isPostSaved = false,
-                    likes = post.likes.toImmutableSet(),
                     postDate = post.postDate,
                     currentUserProfileImageUrl = currentUserProfileImage,
+                    likes = post.likes.toImmutableSet(),
                     ownerComment = post.ownerComment,
                     commentCount = post.comments?.size ?: 0,
                     onPostLiked = { liked ->
                         onPostLiked(liked, post)
                     },
-                    onCommentClick = onCommentClick
+                    onCommentClick = onCommentClick,
+                    onUserTagClick = onUserTagClick,
                 )
             }
         }

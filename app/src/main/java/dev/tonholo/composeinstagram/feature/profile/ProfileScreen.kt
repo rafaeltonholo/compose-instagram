@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.tonholo.composeinstagram.domain.User
 import dev.tonholo.composeinstagram.feature.profile.components.ProfileActionsSection
 import dev.tonholo.composeinstagram.feature.profile.components.ProfileAppBar
 import dev.tonholo.composeinstagram.feature.profile.components.ProfileHeader
@@ -21,7 +22,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel = viewModel(),
+    user: User,
+    viewModel: ProfileViewModel = viewModel(key = user.userTag.tag) {
+        ProfileViewModel(user)
+    },
     navigateTo: suspend (Route) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()

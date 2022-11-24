@@ -8,15 +8,20 @@ import dev.tonholo.composeinstagram.data.fake.local.FakeUserDao
 import dev.tonholo.composeinstagram.data.fake.remote.FakePostApi
 import dev.tonholo.composeinstagram.data.fake.remote.FakeStoryApi
 import dev.tonholo.composeinstagram.data.local.NotificationService
+import dev.tonholo.composeinstagram.data.local.UserDao
 import dev.tonholo.composeinstagram.domain.Post
+import dev.tonholo.composeinstagram.domain.User
+import dev.tonholo.composeinstagram.domain.UserTag
 import dev.tonholo.composeinstagram.feature.home.usecase.FetchHomePosts
 import dev.tonholo.composeinstagram.feature.home.usecase.FetchStories
 import dev.tonholo.composeinstagram.feature.home.usecase.FetchUserData
 import dev.tonholo.composeinstagram.feature.home.usecase.LikePost
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -31,6 +36,7 @@ class HomeViewModel(
     private val fetchHomePosts: FetchHomePosts = FetchHomePosts(FakePostApi),
     private val likePost: LikePost = LikePost(FakePostApi, FakeUserDao),
     private val notificationService: NotificationService = NotificationService(),
+    private val userDao: UserDao = FakeUserDao,
 ) : ViewModel() {
     private val postState = MutableStateFlow(PostState())
     private val postLikeState = MutableStateFlow(PostLikeState())
@@ -89,6 +95,9 @@ class HomeViewModel(
             current.copy(postLikeState = newPostLikeState)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), HomeUiState())
+
+    private val _events = MutableSharedFlow<HomeScreenEvent>(extraBufferCapacity = 10)
+    val events = _events.asSharedFlow()
 
     init {
         fetchNextPosts()
@@ -157,4 +166,28 @@ class HomeViewModel(
     fun onCommentClick(suggestion: String?) {
         Log.d(TAG, "onCommentClick() called with: suggestion = $suggestion")
     }
+
+    fun onUserTagClick(userTag: UserTag) {
+        viewModelScope.launch {
+            userDao.getUser(userTag)?.let { user ->
+                navigateToProfile(user)
+            }
+        }
+    }
+
+    fun onUserProfileClick() {
+        state.value.userState.currentUser?.let { user ->
+            navigateToProfile(user)
+        }
+    }
+
+    private fun navigateToProfile(user: User) {
+        _events.tryEmit(HomeScreenEvent.NavigateToProfile(user))
+    }
+}
+
+sealed interface HomeScreenEvent {
+    object None : HomeScreenEvent
+
+    data class NavigateToProfile(val user: User) : HomeScreenEvent
 }

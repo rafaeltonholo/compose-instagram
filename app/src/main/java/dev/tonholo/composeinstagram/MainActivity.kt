@@ -20,11 +20,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeInstagramTheme {
                 val currentRoute by router.currentRoute.collectAsState(Route.Home)
-                when (currentRoute) {
+                when (val route = currentRoute) {
                     Route.Home -> HomeScreen(navigateTo = router::navigateTo)
 
-                    Route.Profile -> ProfileScreen(navigateTo = router::navigateTo)
-                }
+                    is Route.Profile -> ProfileScreen(user = route.user, navigateTo = router::navigateTo)
+                } // TODO: Handle scroll state when navigate.
             }
         }
     }
