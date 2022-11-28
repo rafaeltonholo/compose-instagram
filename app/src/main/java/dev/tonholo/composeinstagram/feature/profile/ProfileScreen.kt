@@ -2,6 +2,11 @@ package dev.tonholo.composeinstagram.feature.profile
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +26,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -35,7 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import dev.tonholo.composeinstagram.data.fake.FakeData
+import dev.tonholo.composeinstagram.domain.Post
 import dev.tonholo.composeinstagram.domain.User
+import dev.tonholo.composeinstagram.domain.orEmpty
+import dev.tonholo.composeinstagram.feature.post.SneakPeekPostDialog
 import dev.tonholo.composeinstagram.feature.profile.components.PrivateProfilePostSection
 import dev.tonholo.composeinstagram.feature.profile.components.ProfileActionsSection
 import dev.tonholo.composeinstagram.feature.profile.components.ProfileAppBar
@@ -48,8 +57,9 @@ import kotlinx.coroutines.launch
 private const val TAB_POSTS = 0
 private const val TAB_REELS = 1
 private const val TAB_TAGGED_POSTS = 2
+private const val GRID_ROW_SIZE = 3
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ProfileScreen(
     user: User,
@@ -59,6 +69,7 @@ fun ProfileScreen(
     navigateTo: suspend (Route) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
+    val events by viewModel.events.collectAsState(initial = ProfileEvent.None)
     val coroutineScope = rememberCoroutineScope()
     val canShowPosts by remember {
         derivedStateOf {
@@ -71,9 +82,21 @@ fun ProfileScreen(
             }
         }
     }
+    var sneakPeekPost by remember { mutableStateOf<Post?>(null) }
+
+    LaunchedEffect(events) {
+        val currentEvent = events
+        if (currentEvent is ProfileEvent.PostLongClick) {
+            sneakPeekPost = currentEvent.post
+        }
+    }
 
     BackHandler {
-        coroutineScope.launch { navigateTo(Route.Home) }
+        if (sneakPeekPost == null) {
+            coroutineScope.launch { navigateTo(Route.Home) }
+        } else {
+            sneakPeekPost = null
+        }
     }
 
     Scaffold(
@@ -83,12 +106,12 @@ fun ProfileScreen(
     ) { paddingValues ->
 
         LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
+            columns = GridCells.Fixed(GRID_ROW_SIZE),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            item(span = { GridItemSpan(3) }) {
+            item(span = { GridItemSpan(GRID_ROW_SIZE) }) {
                 ProfileHeader(
                     userName = state.user?.name.orEmpty(),
                     userBio = state.bio,
@@ -101,14 +124,14 @@ fun ProfileScreen(
                 )
             }
 
-            item(span = { GridItemSpan(3) }) {
+            item(span = { GridItemSpan(GRID_ROW_SIZE) }) {
                 ProfileActionsSection(
                     state = state,
                     modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp)
                 )
             }
 
-            item(span = { GridItemSpan(3) }) { // TODO: Make it sticky
+            item(span = { GridItemSpan(GRID_ROW_SIZE) }) { // TODO: Make it sticky
                 var selectedTabIndex by remember { mutableStateOf(TAB_POSTS) }
                 val tabIconModifier = Modifier.padding(12.dp)
                 TabRow(
@@ -165,17 +188,39 @@ fun ProfileScreen(
                                 } else {
                                     Modifier.padding(start = 1.dp)
                                 }
+                            )
+                            .combinedClickable(
+                                onLongClick = {
+                                    viewModel.onPostLongClick(post)
+                                },
+                                onClick = {
+                                    // TODO: implement post view
+                                }
                             ),
                         contentScale = ContentScale.Crop,
                     )
                 }
             } else if (state.user?.isPrivate == true) {
-                item(span = { GridItemSpan(3) }) {
+                item(span = { GridItemSpan(GRID_ROW_SIZE) }) {
                     PrivateProfilePostSection(
                         modifier = Modifier.padding(top = 32.dp),
                     )
                 }
             }
+        }
+    }
+
+    AnimatedVisibility(
+        visible = sneakPeekPost != null,
+        enter = fadeIn(),
+        exit = fadeOut(),
+    ) {
+        sneakPeekPost?.let { post ->
+            SneakPeekPostDialog(
+                post = post,
+                currentUserTag = state.user?.userTag.orEmpty(),
+                onDismiss = { sneakPeekPost = null }
+            )
         }
     }
 }

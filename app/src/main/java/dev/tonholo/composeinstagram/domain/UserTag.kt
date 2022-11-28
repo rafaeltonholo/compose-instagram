@@ -8,3 +8,5 @@ value class UserTag(
         val EMPTY = UserTag("")
     }
 }
+
+fun UserTag?.orEmpty() = this ?: UserTag.EMPTY
